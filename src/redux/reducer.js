@@ -5,8 +5,8 @@ export const appReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SAVE_DATA:
       return Object.assign({}, state, {
-        userInfo: action.data.userInfo,
-        children: action.data.children ? action.data.children : [],
+        userInfo: action.data.userInfo ? action.data.userInfo : state.userInfo,
+        children: action.data.children ? action.data.children : state.children,
       });
 
     case actionTypes.HANDLE_PUT_DATA_SUCCESS:

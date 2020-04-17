@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import FormComponent from "../reusable/InputComponent/FormContainer";
 import { useIsFocused } from "@react-navigation/native";
+import { removeItem } from "../../services";
 
 const UserProfilePage = (props) => {
   const { actions, errorMessage, navigation, putDataSuccess } = props;
@@ -15,6 +16,8 @@ const UserProfilePage = (props) => {
   useEffect(() => {
     props.actions.getDataMiddleware();
   }, []);
+  // removeItem("userInfo");
+  // removeItem("children");
 
   return (
     <SafeAreaView>
@@ -36,7 +39,7 @@ const UserProfilePage = (props) => {
 };
 
 const showAlert = (message, handlePutDataSuccess) =>
-  Alert.alert("Save Error", message, [
+  Alert.alert("Request failed", message, [
     {
       text: "OK",
       onPress: () => handlePutDataSuccess({ success: true, error: null }),

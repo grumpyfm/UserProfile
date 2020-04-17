@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import InputComponent from "./InputComponent";
 import { generateId } from "../../../services";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
+import DatePickerComponent from "../DatePickerComponent";
 
 class ChildrenBlock extends Component {
   render = () => {
@@ -21,12 +22,12 @@ class ChildrenBlock extends Component {
                   handleSubmit={this.submit}
                   inputProp={child.name}
                 />
-                <InputComponent
-                  editable={editable}
-                  title={`${child.id}-birthday`}
+                <DatePickerComponent
                   label={"Birthday"}
+                  title={`${child.id}-birthday`}
+                  editable={editable}
                   handleSubmit={this.submit}
-                  inputProp={child.birthday}
+                  date={child.birthday}
                 />
               </>
               {editable && (

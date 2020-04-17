@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Button } from "react-native";
 import InputComponent from "./InputComponent";
 import ChildrenBlock from "./ChildrenBlock";
+import DatePickerComponent from "../DatePickerComponent";
 
 class FormComponent extends Component {
   state = {
@@ -26,16 +27,31 @@ class FormComponent extends Component {
   drawUserInfo = () => {
     const { editable, userInfo } = this.props;
     if (userInfo?.name !== "" || editable) {
-      return Object.keys(userInfo).map((keyName, i) => (
-        <InputComponent
-          key={keyName}
-          editable={editable}
-          title={keyName}
-          label={keyName}
-          handleSubmit={this.handleSubmitUserInfo}
-          inputProp={userInfo[keyName]}
-        />
-      ));
+      return (
+        <>
+          <InputComponent
+            editable={editable}
+            title={"name"}
+            label={"Name"}
+            handleSubmit={this.handleSubmitUserInfo}
+            inputProp={userInfo.name}
+          />
+          <InputComponent
+            editable={editable}
+            title={"surname"}
+            label={"Surname"}
+            handleSubmit={this.handleSubmitUserInfo}
+            inputProp={userInfo.surname}
+          />
+          <DatePickerComponent
+            label={"Birthday"}
+            title={"birthday"}
+            editable={editable}
+            handleSubmit={this.handleSubmitUserInfo}
+            date={userInfo.birthday}
+          />
+        </>
+      );
     } else {
       return (
         <Button
@@ -47,16 +63,24 @@ class FormComponent extends Component {
   };
 
   drawButtons = () => {
+    let disabledButton =
+      this.state.userInfo.name === "" ||
+      this.state.userInfo.surname === "" ||
+      this.state.userInfo.birthday === "";
     return (
       <View style={styles.bottonBlock}>
-        <TouchableOpacity onPress={this.handleSave} style={styles.botton}>
-          <Text>Save</Text>
+        <TouchableOpacity
+          disabled={disabledButton}
+          onPress={this.handleSave}
+          style={disabledButton ? styles.bisabledButton : styles.botton}
+        >
+          <Text style={styles.bottonTitle}>Save</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => this.props.navigation.pop()}
           style={styles.botton}
         >
-          <Text>Discard</Text>
+          <Text style={styles.bottonTitle}>Discard</Text>
         </TouchableOpacity>
       </View>
     );
@@ -64,7 +88,6 @@ class FormComponent extends Component {
 
   handleSave = () => {
     const { userInfo, children } = this.state;
-
     this.props.actions.putDataMiddleware({ userInfo, children });
     this.props.navigation.pop();
   };
@@ -92,6 +115,18 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     backgroundColor: "#2188dc",
+  },
+  bisabledButton: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    margin: 10,
+    flex: 1,
+    borderRadius: 10,
+    alignItems: "center",
+    backgroundColor: "#BEDEF9",
+  },
+  bottonTitle: {
+    color: "#ffff",
   },
 });
 
