@@ -5,7 +5,11 @@ export const putDataMiddleware = (data) => {
     services.setItems(data);
     dispatch({ type: "SAVE_DATA", data: data });
     services.putData(data).then((res) => {
-      dispatch({ type: "PUT_DATA_SUCCESS", success: res });
+      dispatch({
+        type: "HANDLE_PUT_DATA_SUCCESS",
+        success: res.success,
+        error: res.error,
+      });
     });
   };
 };

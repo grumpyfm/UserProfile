@@ -1,4 +1,5 @@
 import { AsyncStorage } from "react-native";
+import axios from "axios";
 
 export const getItems = async () => {
   try {
@@ -31,10 +32,15 @@ export const removeItem = async (key) => {
   }
 };
 
-export const putData = async () => {
-  console.log("putData");
-
-  return true;
+export const putData = async (data) => {
+  try {
+    await axios.put(`https://putData`, {
+      data,
+    });
+    return { success: false, error: null };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
 };
 
 export const generateId = () => {

@@ -7,12 +7,12 @@ export const appReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         userInfo: action.data.userInfo,
         children: action.data.children ? action.data.children : [],
-        putDataSuccess: !state.putDataSuccess,
       });
 
-    case actionTypes.PUT_DATA_SUCCESS:
+    case actionTypes.HANDLE_PUT_DATA_SUCCESS:
       return Object.assign({}, state, {
         putDataSuccess: action.success,
+        errorMessage: action.error,
       });
 
     default:

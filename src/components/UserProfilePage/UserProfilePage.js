@@ -1,9 +1,16 @@
 import React, { useEffect } from "react";
-import { StyleSheet, ScrollView, SafeAreaView, Button } from "react-native";
+import {
+  StyleSheet,
+  ScrollView,
+  SafeAreaView,
+  Button,
+  Alert,
+} from "react-native";
 import FormComponent from "../reusable/InputComponent/FormContainer";
 import { useIsFocused } from "@react-navigation/native";
 
 const UserProfilePage = (props) => {
+  const { actions, errorMessage, navigation, putDataSuccess } = props;
   const isFocused = useIsFocused();
   useEffect(() => {
     props.actions.getDataMiddleware();
@@ -14,17 +21,27 @@ const UserProfilePage = (props) => {
       <ScrollView style={styles.scrollView}>
         {isFocused && (
           <>
-            <FormComponent navigation={props.navigation} editable={false} />
+            <FormComponent navigation={navigation} editable={false} />
             <Button
               title="Edit"
-              onPress={() => props.navigation.push("EditUserProfile")}
+              onPress={() => navigation.push("EditUserProfile")}
             />
           </>
         )}
+        {!putDataSuccess &&
+          showAlert(errorMessage, actions.handlePutDataSuccess)}
       </ScrollView>
     </SafeAreaView>
   );
 };
+
+const showAlert = (message, handlePutDataSuccess) =>
+  Alert.alert("Save Error", message, [
+    {
+      text: "OK",
+      onPress: () => handlePutDataSuccess({ success: true, error: null }),
+    },
+  ]);
 
 const styles = StyleSheet.create({
   container: {

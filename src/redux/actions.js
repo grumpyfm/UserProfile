@@ -1,9 +1,9 @@
 export const SAVE_DATA = "SAVE_DATA";
 export const GET_DATA = "GET_DATA";
-export const PUT_DATA_SUCCESS = "PUT_DATA_SUCCESS";
+export const HANDLE_PUT_DATA_SUCCESS = "HANDLE_PUT_DATA_SUCCESS";
 
-export const putDataSuccess = (success) => {
-  return { type: PUT_DATA_SUCCESS, success };
+export const handlePutDataSuccess = (success, error) => {
+  return { type: HANDLE_PUT_DATA_SUCCESS, success, error };
 };
 
 export const saveData = () => {
