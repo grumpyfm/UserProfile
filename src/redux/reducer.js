@@ -6,7 +6,7 @@ export const appReducer = (state = initialState, action) => {
     case actionTypes.SAVE_DATA:
       return Object.assign({}, state, {
         userInfo: action.data.userInfo,
-        children: action.data.children,
+        children: action.data.children ? action.data.children : [],
         putDataSuccess: !state.putDataSuccess,
       });
 

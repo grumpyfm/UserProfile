@@ -1,13 +1,15 @@
 import React from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, SafeAreaView, ScrollView } from "react-native";
 
 import FormComponent from "../reusable/InputComponent/FormContainer";
 
 export default function EditPage(props) {
   return (
-    <View style={styles.container}>
-      <FormComponent navigation={props.navigation} editable={true} />
-    </View>
+    <SafeAreaView>
+      <ScrollView style={styles.scrollView}>
+        <FormComponent navigation={props.navigation} editable={true} />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -16,5 +18,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingLeft: 10,
     paddingRight: 10,
+  },
+  scrollView: {
+    marginHorizontal: 10,
+    marginVertical: 10,
   },
 });

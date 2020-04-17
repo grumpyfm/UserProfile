@@ -1,55 +1,31 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Button,
-  SafeAreaView,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Button } from "react-native";
 import InputComponent from "./InputComponent";
-import { generateId } from "../../../services";
+import ChildrenBlock from "./ChildrenBlock";
 
 class FormComponent extends Component {
   state = {
     userInfo: this.props.userInfo,
-    children: this.props.children,
+    children: JSON.parse(JSON.stringify(this.props.children)),
   };
 
   render() {
-    const { editable } = this.props;
+    const { editable, children } = this.props;
     return (
-      <SafeAreaView>
-        <ScrollView style={styles.scrollView}>
-          {this.drawUserInfo()}
-          <Text>Children:</Text>
-          {this.state.children.map((child) => (
-            <View style={styles.container} key={`${child.id}`}>
-              <InputComponent
-                editable={editable}
-                title={`${child.id}-name`}
-                label={"Name"}
-                handleSubmit={this.handleSubmitChildren}
-                inputProp={child.name}
-              />
-              <InputComponent
-                editable={editable}
-                title={`${child.id}-birthday`}
-                label={"Birthday"}
-                handleSubmit={this.handleSubmitChildren}
-                inputProp={child.birthday}
-              />
-            </View>
-          ))}
-          {editable && this.drawButtons()}
-        </ScrollView>
-      </SafeAreaView>
+      <View>
+        {this.drawUserInfo()}
+        <ChildrenBlock
+          hanleChildrenUpdate={this.hanleChildrenUpdate}
+          editable={editable}
+          children={editable ? this.state.children : children}
+        />
+        {editable && this.drawButtons()}
+      </View>
     );
   }
   drawUserInfo = () => {
     const { editable, userInfo } = this.props;
-    if (userInfo?.name !== "") {
+    if (userInfo?.name !== "" || editable) {
       return Object.keys(userInfo).map((keyName, i) => (
         <InputComponent
           key={keyName}
@@ -60,60 +36,41 @@ class FormComponent extends Component {
           inputProp={userInfo[keyName]}
         />
       ));
-    } else if (!editable) {
-      <Button
-        title="Add an information"
-        onPress={() => this.props.push("EditUserProfile")}
-      />;
+    } else {
+      return (
+        <Button
+          title="Add an information"
+          onPress={() => this.props.navigation.push("EditUserProfile")}
+        />
+      );
     }
   };
 
   drawButtons = () => {
     return (
-      <>
-        <TouchableOpacity onPress={this.addNewChild}>
-          <Text>+ Add a child</Text>
+      <View style={styles.bottonBlock}>
+        <TouchableOpacity onPress={this.handleSave} style={styles.botton}>
+          <Text>Save</Text>
         </TouchableOpacity>
-        <View style={styles.bottonBlock}>
-          <TouchableOpacity onPress={this.handleSave} style={styles.botton}>
-            <Text>Save</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.pop()}
-            style={styles.botton}
-          >
-            <Text>Discard</Text>
-          </TouchableOpacity>
-        </View>
-      </>
+        <TouchableOpacity
+          onPress={() => this.props.navigation.pop()}
+          style={styles.botton}
+        >
+          <Text>Discard</Text>
+        </TouchableOpacity>
+      </View>
     );
-  };
-  addNewChild = () => {
-    if (
-      this.state.children[this.state.children.length - 1]?.name !== "" ||
-      !this.state.children.length
-    ) {
-      let children = [...this.state.children];
-      children.push({ name: "", birthday: "", id: generateId() });
-      this.setState({ children });
-    }
   };
 
   handleSave = () => {
     const { userInfo, children } = this.state;
+
     this.props.actions.putDataMiddleware({ userInfo, children });
     this.props.navigation.pop();
   };
 
-  handleSubmitChildren = (title, inputValue) => {
-    let splitedTitle = title.split("-");
-    let children = [...this.state.children];
-    children.map((child) => {
-      if (splitedTitle[0] === child.id) {
-        return (child[splitedTitle[1]] = inputValue);
-      }
-    });
-    this.setState({ children });
+  hanleChildrenUpdate = (newChildren) => {
+    this.setState({ children: newChildren });
   };
 
   handleSubmitUserInfo = (title, inputValue) => {
@@ -126,9 +83,6 @@ class FormComponent extends Component {
 }
 
 const styles = StyleSheet.create({
-  scrollView: {
-    marginHorizontal: 10,
-  },
   bottonBlock: { flexDirection: "row" },
   botton: {
     paddingTop: 10,

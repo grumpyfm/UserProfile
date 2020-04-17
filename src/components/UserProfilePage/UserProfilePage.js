@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StyleSheet, View, TouchableOpacity, Button } from "react-native";
+import { StyleSheet, ScrollView, SafeAreaView, Button } from "react-native";
 import FormComponent from "../reusable/InputComponent/FormContainer";
 import { useIsFocused } from "@react-navigation/native";
 
@@ -10,17 +10,19 @@ const UserProfilePage = (props) => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      {isFocused && (
-        <>
-          <FormComponent editable={false} />
-          <Button
-            title="Edit"
-            onPress={() => props.navigation.push("EditUserProfile")}
-          />
-        </>
-      )}
-    </View>
+    <SafeAreaView>
+      <ScrollView style={styles.scrollView}>
+        {isFocused && (
+          <>
+            <FormComponent navigation={props.navigation} editable={false} />
+            <Button
+              title="Edit"
+              onPress={() => props.navigation.push("EditUserProfile")}
+            />
+          </>
+        )}
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -29,6 +31,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingLeft: 10,
     paddingRight: 10,
+  },
+  scrollView: {
+    marginHorizontal: 10,
+    marginVertical: 10,
   },
 });
 
