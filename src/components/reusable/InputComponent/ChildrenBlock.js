@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import InputComponent from "./InputComponent";
 import { generateId } from "../../../services";
+import { MaterialCommunityIcons } from "react-native-vector-icons";
 
 class ChildrenBlock extends Component {
   render = () => {
@@ -12,20 +13,30 @@ class ChildrenBlock extends Component {
           <Text style={styles.header}>Children:</Text>
           {children.map((child) => (
             <View style={styles.childBlock} key={`${child.id}`}>
-              <InputComponent
-                editable={editable}
-                title={`${child.id}-name`}
-                label={"Name"}
-                handleSubmit={this.submit}
-                inputProp={child.name}
-              />
-              <InputComponent
-                editable={editable}
-                title={`${child.id}-birthday`}
-                label={"Birthday"}
-                handleSubmit={this.submit}
-                inputProp={child.birthday}
-              />
+              <>
+                <InputComponent
+                  editable={editable}
+                  title={`${child.id}-name`}
+                  label={"Name"}
+                  handleSubmit={this.submit}
+                  inputProp={child.name}
+                />
+                <InputComponent
+                  editable={editable}
+                  title={`${child.id}-birthday`}
+                  label={"Birthday"}
+                  handleSubmit={this.submit}
+                  inputProp={child.birthday}
+                />
+              </>
+              {editable && (
+                <MaterialCommunityIcons
+                  style={styles.icon}
+                  onPress={() => this.removeChild(child.id)}
+                  name="trash-can-outline"
+                  size={26}
+                />
+              )}
             </View>
           ))}
           {editable && (
@@ -51,6 +62,14 @@ class ChildrenBlock extends Component {
       return null;
     }
   };
+  removeChild = (id) => {
+    const { children, hanleChildrenUpdate } = this.props;
+    var newArr = JSON.parse(JSON.stringify(children)).filter((child) => {
+      return child.id !== id;
+    });
+    hanleChildrenUpdate(newArr ? newArr : []);
+  };
+
   addNewChild = () => {
     const { children, hanleChildrenUpdate } = this.props;
     if (children[children.length - 1]?.name !== "" || !children.length) {
@@ -79,9 +98,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginVertical: 10,
   },
+  icon: { alignSelf: "flex-end", paddingTop: 10 },
   childBlock: {
     borderBottomWidth: 1,
     marginBottom: 10,
+    paddingBottom: 10,
     borderRadius: 7,
     borderColor: "gray",
   },
