@@ -22,6 +22,7 @@ const InputComponent = (props) => {
 
 const styles = StyleSheet.create({
   input: {
+    paddingLeft: 10,
     flex: 4,
     borderRadius: 6,
     height: 50,

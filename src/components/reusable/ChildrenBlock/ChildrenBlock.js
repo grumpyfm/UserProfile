@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import InputComponent from "./InputComponent";
-import { generateId } from "../../../services";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
-import DatePickerComponent from "../DatePickerComponent";
+
+import DatePickerComponent from "../DatePickerComponent/DatePickerComponent";
+import InputComponent from "../InputComponent/InputComponent";
+import { generateId } from "../../../services";
 
 class ChildrenBlock extends Component {
   render = () => {

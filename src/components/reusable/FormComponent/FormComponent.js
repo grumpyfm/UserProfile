@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Button } from "react-native";
-import InputComponent from "./InputComponent";
-import ChildrenBlock from "./ChildrenBlock";
-import DatePickerComponent from "../DatePickerComponent";
+
+import InputComponent from "../InputComponent/InputComponent";
+import ChildrenBlock from "../ChildrenBlock/ChildrenBlock";
+import DatePickerComponent from "../DatePickerComponent/DatePickerComponent";
 
 class FormComponent extends Component {
   state = {
@@ -50,6 +51,12 @@ class FormComponent extends Component {
             handleSubmit={this.handleSubmitUserInfo}
             date={userInfo.birthday}
           />
+          {!editable && (
+            <Button
+              title="Edit"
+              onPress={() => this.props.navigation.push("EditUserProfile")}
+            />
+          )}
         </>
       );
     } else {

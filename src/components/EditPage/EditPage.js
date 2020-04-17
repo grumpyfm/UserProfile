@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, SafeAreaView, ScrollView } from "react-native";
 
-import FormComponent from "../reusable/InputComponent/FormContainer";
+import FormComponent from "../reusable/FormComponent/FormComponentContainer";
 
 export default function EditPage(props) {
   return (

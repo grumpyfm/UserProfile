@@ -1,35 +1,22 @@
 import React, { useEffect } from "react";
-import {
-  StyleSheet,
-  ScrollView,
-  SafeAreaView,
-  Button,
-  Alert,
-} from "react-native";
-import FormComponent from "../reusable/InputComponent/FormContainer";
 import { useIsFocused } from "@react-navigation/native";
-import { removeItem } from "../../services";
+import { StyleSheet, ScrollView, SafeAreaView, Alert } from "react-native";
+
+import FormComponent from "../reusable/FormComponent/FormComponentContainer";
 
 const UserProfilePage = (props) => {
   const { actions, errorMessage, navigation, putDataSuccess } = props;
   const isFocused = useIsFocused();
+
   useEffect(() => {
     props.actions.getDataMiddleware();
   }, []);
-  // removeItem("userInfo");
-  // removeItem("children");
 
   return (
     <SafeAreaView>
       <ScrollView style={styles.scrollView}>
         {isFocused && (
-          <>
-            <FormComponent navigation={navigation} editable={false} />
-            <Button
-              title="Edit"
-              onPress={() => navigation.push("EditUserProfile")}
-            />
-          </>
+          <FormComponent navigation={navigation} editable={false} />
         )}
         {!putDataSuccess &&
           showAlert(errorMessage, actions.handlePutDataSuccess)}
